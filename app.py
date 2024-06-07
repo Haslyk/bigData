@@ -4,7 +4,6 @@ import pandas as pd
 
 app = Flask(__name__)
 
-# Modeli ve özellik adlarını yükleme
 model = joblib.load('social_media_addiction_model.pkl')
 selected_features = joblib.load('feature_names.pkl')
 
@@ -41,13 +40,12 @@ def predict():
             4: [0, 0, 0, 1]
         }
 
-        # Mental sağlık skoru hesaplama
+        # Mental sağlık skoru
         mental_health_score = (
             phq9_q2 + phq9_q7 +
             gad7_q4
         )
 
-        # Veriyi DataFrame'e dönüştürme
         new_user_data = {
             'age': [age],
             'gender': [gender],
@@ -66,7 +64,7 @@ def predict():
         new_user_df = pd.DataFrame(new_user_data)
         new_user_df = new_user_df[selected_features]
 
-        # Tahmin yapma
+        # Tahmin 
         predicted_addiction_score = model.predict(new_user_df)[0]
 
         # Öneri sistemi
