@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sosyal Medya Bağımlılığı Tahmin Formu</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h2 class="mt-5">Sosyal Medya Bağımlılığı Tahmin Formu</h2>
+    <form id="predictionForm" class="mt-4 row">
+        <div class="form-group col-6">
+            <label for="age">Yaşınız nedir?</label>
+            <input type="number" class="form-control" name="age" id="age" placeholder="Yaşınızı girin">
+        </div>
+        <div class="form-group col-6">
+            <label for="gender">Cinsiyetiniz nedir?</label>
+            <select class="form-control" name="gender" id="gender">
+                <option value="0">Kadın</option>
+                <option value="1">Erkek</option>
+            </select>
+        </div>
+
+        <div class="form-group col-6">
+            <label for="relationship_status">İlişki durumunuz nedir?</label>
+            <select class="form-control" name="relationship_status" id="relationship_status">
+                <option value="0">İlişkisi yok</option>
+                <option value="1">İlişkisi var</option>
+            </select>
+        </div>
+        <div class="form-group col-6">
+            <label for="occupation_status">Meslek durumunuz nedir?</label>
+            <select class="form-control" name="occupation_status" id="occupation_status">
+                <option value="1">Emekli</option>
+                <option value="2">Maaşlı Çalışan</option>
+                <option value="3">Okul Öğrencisi</option>
+                <option value="4">Üniversite Öğrencisi</option>
+            </select>
+        </div>
+        <div class="form-group col-6">
+            <label for="social_media_time">Günde Kaç Saat Sosyal Medya Kullanıyorsunuz?</label>
+            <input type="number" class="form-control" name="social_media_time" id="social_media_time" placeholder="Saat girin">
+        </div>
+        <div class="form-group col-6">
+            <label for="phq9_q2">Hangi sıklıkta depresif ya da umutsuz hissediyorsunuz?</label>
+            <select class="form-control" name="phq9_q2" id="phq9_q2">
+                <option value="0">Hiçbir zaman</option>
+                <option value="1">Nadiren</option>
+                <option value="2">Bazen</option>
+                <option value="3">Sık Sık</option>
+                <option value="4">Her Zaman</option>
+            </select>
+        </div>
+        <div class="form-group col-6">
+            <label for="phq9_q7">Hangi sıklıkta odak problemi yaşıyorsunuz?</label>
+            <select class="form-control" name="phq9_q7" id="phq9_q7">
+                <option value="0">Hiçbir zaman</option>
+                <option value="1">Nadiren</option>
+                <option value="2">Bazen</option>
+                <option value="3">Sık Sık</option>
+                <option value="4">Her Zaman</option>
+            </select>
+        </div>
+        <div class="form-group col-6">
+            <label for="gad7_q4">Hangi sıklıkta kendinizi baskı altında hissediyorsunuz?</label>
+            <select class="form-control" name="gad7_q4" id="gad7_q4">
+                <option value="0">Hiçbir zaman</option>
+                <option value="1">Nadiren</option>
+                <option value="2">Bazen</option>
+                <option value="3">Sık Sık</option>
+                <option value="4">Her Zaman</option>
+            </select>
+        </div>
+        <div class="form-group col-12">
+            <label for="acha_q2">Mental sağlık durumunuz genel olarak hangisi?</label>
+            <select class="form-control" name="acha_q2" id="acha_q2">
+                <option value="0">Çok kötü</option>
+                <option value="1">Kötü</option>
+                <option value="2">Orta</option>
+                <option value="3">İyi</option>
+                <option value="4">Çok iyi</option>
+            </select>
+        </div>
+        
+        <button type="button" class="btn btn-primary ml-2" onclick="submitForm()">Tahmin Et</button>
+    </form>
+    <h3 class="mt-4">Tahmin Sonucu</h3>
+    <p id="result"></p>
+</div>
+
+<script>
+    function submitForm() {
+        const data = {
+            age: $("#age").val(),
+            gender: $("#gender").val(),
+            relationship_status: $("#relationship_status").val(),
+            phq9_q2: $("#phq9_q2").val(),
+            phq9_q7: $("#phq9_q7").val(),
+            gad7_q4: $("#gad7_q4").val(),
+            acha_q2: $("#acha_q2").val(),
+            occupation_status: $("#occupation_status").val()
+        };
+
+        $.ajax({
+            url: "/predict",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function(response) {
+                $("#result").html(
+                    "<strong>Tahmin Edilen Bağımlılık Skoru:</strong> " + response.score + "<br>" +
+                    "<strong>Öneri:</strong> " + response.recommendation
+                );
+            },
+            error: function(error) {
+                $("#result").html("<strong>Hata:</strong> " + error.responseText);
+            }
+        });
+    }
+</script>
+</body>
+</html>
