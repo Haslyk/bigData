@@ -1,7 +1,6 @@
 import joblib
 import pandas as pd
 
-# Modeli ve özellik adlarını yükleme
 model = joblib.load('social_media_addiction_model.pkl')
 selected_features = joblib.load('feature_names.pkl')
 
@@ -21,11 +20,10 @@ new_user_data = {
     'occupation_status_University Student': [1]
 }
 
-# Veriyi DataFrame'e dönüştürme ve özellikleri sıralama
 new_user_df = pd.DataFrame(new_user_data)
 new_user_df = new_user_df[selected_features]
 
-# Tahmin yapma
+# Tahmin
 predicted_addiction_score = model.predict(new_user_df)
 
 print(f"Predicted Mental Health Score: {predicted_addiction_score[0]}")
