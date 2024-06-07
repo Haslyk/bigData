@@ -39,6 +39,5 @@ def get_recommendations(score):
     else:
         return "Mental sağlığınız risk altında. Bir uzmandan yardım almayı düşünebilirsiniz."
 
-# Tahmin edilen skor üzerinden öneri sunma
 recommendation = get_recommendations(predicted_addiction_score[0])
 print(f"Recommendation: {recommendation}")
