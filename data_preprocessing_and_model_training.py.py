@@ -7,10 +7,8 @@ import joblib
 
 final_dataset = pd.read_csv('../../veri_setleri/final_dataset.csv')
 
-# Gereksiz sütunları çıkarma
 final_dataset = final_dataset.drop(columns=['Unnamed: 0', 'acha_depression'])
 
-# Eksik değerlerin işlenmesi
 final_dataset_cleaned = final_dataset.dropna(axis=1, thresh=0.5 * len(final_dataset))
 
 for column in final_dataset_cleaned.columns:
@@ -43,14 +41,12 @@ y = final_dataset_encoded['mental_health_score']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Modeli eğitme
 model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
-# Modeli kaydetme
 joblib.dump(model, 'social_media_addiction_model.pkl')
 
-# Tahminler ve performans değerlendirmesi
+# Tahminler ve performans 
 y_pred = model.predict(X_test)
 mse = mean_squared_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
