@@ -17,7 +17,6 @@ def predict():
         # Kullanıcıdan gelen verileri alma
         data = request.get_json()
 
-        # Boş stringleri 0'a veya uygun default değerlere çevirme
         def convert_to_float(value):
             if value.strip('"') == '':
                 return 0.0
